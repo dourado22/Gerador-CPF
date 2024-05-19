@@ -1,43 +1,55 @@
-function validarCPF(cpf) {
-    cpf = cpf.replace(/[^0-9]/g, '');
+const prompt = require('prompt-sync')();
 
-    if (cpf.length !== 11) {
-        console.log("CPF inválido. Deve conter 11 dígitos.");
-        return false;
-    }
+while (true){
+    function validarCPF(cpf) {
+        cpf = cpf.replace(/[^0-9]/g, '');
 
-    let array = cpf.split ('')
-    console.log(array);    
+        if (cpf.length !== 11) {
+            console.log("CPF inválido. Deve conter 11 dígitos.");
+            return false;
+        }
 
-    let soma1 = 0
-    let k = 10
+        let array = cpf.split ('')
+        console.log(array);    
+
+        let soma1 = 0
+        let k = 10
+        
+        for(let i = 0; i <= 8; i++) {
+            soma1 += array[i] * k
+            k--
+        }
+
+        let soma2 = 0
+        k = 11
+
+        for (let i = 0; i <= 9; i++) {
+            soma2 += array[i] * k
+            k--
+        }
+
+        let result1 = (soma1 * 10) % 11
+        console.log("O resultado do primeiro digito é: " + result1.toFixed(0));
+        let result2 = (soma2 * 10) % 11     
+        console.log("O resultado do segundo digito é: " + result2.toFixed(0));
     
-    for(let i = 0; i <= 8; i++) {
-        soma1 += array[i] * k
-        k--
+        if (Number(cpf.charAt(9)) === result1 && Number(cpf.charAt(10)) === result2) {
+            console.log("CPF é válido.");
+            return true;
+        } else {
+            console.log("CPF é inválido.");
+            return false;
+        }   
     }
 
-    let soma2 = 0
-    k = 11
+    let cpf1 = String(prompt("Digite seu CPF: "))
+    validarCPF(cpf1);
 
-    for (let i = 0; i <= 9; i++) {
-        soma2 += array[i] * k
-        k--
+    let resp = '';
+    while (resp !== 'S' && resp !== 'N') {
+        resp = prompt('Quer Continuar? [S/N]: ').trim().toUpperCase();
     }
-
-    let result1 = (soma1 * 10) % 11
-    console.log("O resultado do primeiro digito é: " + result1.toFixed(0));
-    let result2 = (soma2 * 10) % 11     
-    console.log("O resultado do segundo digito é: " + result2.toFixed(0));
- 
-    if (Number(cpf.charAt(9)) === result1 && Number(cpf.charAt(10)) === result2) {
-        console.log("CPF é válido.");
-        return true;
-    } else {
-        console.log("CPF é inválido.");
-        return false;
-    }   
+    if (resp === 'N') {
+        break;
+    }
 }
-
-let cpf1 = "700.401.811-38"
-validarCPF(cpf1);
